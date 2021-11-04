@@ -10,10 +10,8 @@ import { getBikeInfo } from "@/modules.js";
 export default {
   name: "About",
   setup() {
-    getBikeInfo("Station", "Taipei", 10, 0).then((res) => console.log(res));
-    // getBikeInfo("Availability", "Taipei", 10, 0).then((res) =>
-    //   console.log(res)
-    // );
+    getBikeInfo("Station", "Taipei").then((res) => console.log(res));
+    // getBikeInfo("Availability", "Taipei").then((res) => console.log(res));
   },
 };
 </script>
