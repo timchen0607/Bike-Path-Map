@@ -1,0 +1,64 @@
+@import "./_variables.scss";
+
+::-webkit-scrollbar {
+  width: min(0.4rem, 1vw);
+  height: min(0.4rem, 1vw);
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 0.25rem;
+  background: $c_secondary;
+}
+
+body {
+  font: 18px $font;
+  color: $c_dark;
+  background-color: $c_secondary-light;
+}
+
+.map {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+.pin {
+  width: 46px;
+  height: 46px;
+  margin: 5px;
+  padding-top: 0.3rem;
+  color: $c_light;
+  text-align: center;
+  font-size: 1.1rem;
+  background: url(../images/pin_0.png) no-repeat center center / cover;
+  box-sizing: border-box;
+  transform: translate(-50%, -50%);
+}
+
+.ctrl {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 400;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  &-wrapper {
+    padding: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.bike {
+  background-color: $c_light;
+  border-radius: 0.75rem;
+  box-sizing: border-box;
+  &-title {
+    padding: 1rem;
+    font-size: 1.2rem;
+    color: $c_light;
+    background-color: $c_dark;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+  }
+}

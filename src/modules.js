@@ -12,15 +12,15 @@ const getAuthHeader = () => {
   return { Authorization: Authorization, "X-Date": GMTString };
 };
 
-const perPage = 18; // 每頁顯示筆數
-// mode => ScenicSpot/Restaurant/Hotel/Activity
+const perPage = 30; // 每頁顯示筆數
+// mode => Station/Availability
 // $count=true 查看 API 剩餘次數
 
-// 抓取 自行車租借站/及時車位 相關資料
-// mode => Station/Availability
-const getBikeInfo = (mode, city, page = 1) => {
-  let url = `https://ptx.transportdata.tw/MOTC/v2/Bike/${mode}/${city}?`;
-  url += `$top=${perPage}&$skip=${(page - 1) * perPage}&$format=JSON`;
+// 抓取 自行車租借站/及時車位 鄰近相關資料
+const getNearbyBikeInfo = (mode, lat, lon, page = 1) => {
+  let url = `https://ptx.transportdata.tw/MOTC/v2/Bike/${mode}/NearBy?`;
+  url += `$top=${perPage}&$skip=${(page - 1) * perPage}`;
+  url += `&$spatialFilter=nearby(${lat},${lon},1000)&$format=JSON`;
   return fetch(url, { headers: getAuthHeader() }).then((res) => res.json());
 };
 
@@ -31,13 +31,4 @@ const getBikeShape = (city, page = 1) => {
   return fetch(url, { headers: getAuthHeader() }).then((res) => res.json());
 };
 
-// 抓取 自行車租借站/及時車位 鄰近相關資料
-// mode => Station/Availability
-const getNearbyBikeInfo = (mode, city, lat, lon, meters = 1000, page = 1) => {
-  let url = `https://ptx.transportdata.tw/MOTC/v2/Bike/${mode}/${city}?`;
-  url += `$top=${perPage}&$skip=${(page - 1) * perPage}`;
-  url += `&$spatialFilter=nearby(${lat}%2C${lon}%2C${meters})&$format=JSON`;
-  return fetch(url, { headers: getAuthHeader() }).then((res) => res.json());
-};
-
-export { getBikeInfo, getBikeShape, getNearbyBikeInfo };
+export { getNearbyBikeInfo, getBikeShape };

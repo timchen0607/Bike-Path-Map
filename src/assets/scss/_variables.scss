@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;700&display=swap");
+
 @mixin pad {
   @media screen and (max-width: 1024px) {
     @content;
@@ -8,3 +10,11 @@
     @content;
   }
 }
+
+$font: "Noto Sans TC", Arial, sans-serif;
+// $c_main: var(--c-main);
+$c_dark: #2c2c2c;
+$c_light: #ffffff;
+$c_secondary: #c8c8c8;
+$c_secondary-light: #fafafa;
+$c_secondary-dark: #707070;
