@@ -28,9 +28,18 @@ body {
   color: $c_light;
   text-align: center;
   font-size: 1.1rem;
-  background: url(../images/pin_0.png) no-repeat center center / cover;
+  background: url(../images/pin_1.png) no-repeat center center / cover;
   box-sizing: border-box;
   transform: translate(-50%, -50%);
+}
+.pin-error {
+  background: url(../images/pin_0.png) no-repeat center center / cover;
+}
+.pin-spot {
+  background: url(../images/pin_spot.png) no-repeat center center / cover;
+}
+.pin-restaurant {
+  background: url(../images/pin_restaurant.png) no-repeat center center / cover;
 }
 
 .ctrl {
@@ -60,5 +69,23 @@ body {
     background-color: $c_dark;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
+  }
+  &-success,
+  &-error {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #198754;
+  }
+  &-error {
+    color: #dc3545;
+  }
+  &-available {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 1rem;
+    font-size: 1rem;
+    text-align: center;
   }
 }

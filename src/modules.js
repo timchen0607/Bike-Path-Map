@@ -13,14 +13,23 @@ const getAuthHeader = () => {
 };
 
 const perPage = 30; // 每頁顯示筆數
-// mode => Station/Availability
 // $count=true 查看 API 剩餘次數
 
 // 抓取 自行車租借站/及時車位 鄰近相關資料
-const getNearbyBikeInfo = (mode, lat, lon, page = 1) => {
+// mode => Station/Availability
+const getNearbyBikeInfo = (mode, lat, lon) => {
   let url = `https://ptx.transportdata.tw/MOTC/v2/Bike/${mode}/NearBy?`;
-  url += `$top=${perPage}&$skip=${(page - 1) * perPage}`;
-  url += `&$spatialFilter=nearby(${lat},${lon},1000)&$format=JSON`;
+  url += `$spatialFilter=nearby(${lat},${lon},1000)&$format=JSON`;
+  return fetch(url, { headers: getAuthHeader() }).then((res) => res.json());
+};
+
+// 抓取 景點/餐飲 鄰近相關資料
+// mode => ScenicSpot/Restaurant
+const getNearbyInfo = (mode, lat, lon) => {
+  let url = `https://ptx.transportdata.tw/MOTC/v2/Tourism/${mode}?`;
+  url += `&$format=JSON&$select=ID,Name,Picture,Position`;
+  url += `&$spatialFilter=nearby(${lat},${lon},1500)`;
+  url += `&$filter=Picture/PictureUrl1 ne null`;
   return fetch(url, { headers: getAuthHeader() }).then((res) => res.json());
 };
 
@@ -31,4 +40,4 @@ const getBikeShape = (city, page = 1) => {
   return fetch(url, { headers: getAuthHeader() }).then((res) => res.json());
 };
 
-export { getNearbyBikeInfo, getBikeShape };
+export { getNearbyBikeInfo, getNearbyInfo, getBikeShape };

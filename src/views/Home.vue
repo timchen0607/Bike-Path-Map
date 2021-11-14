@@ -18,36 +18,38 @@
 
 <script>
 import L from "leaflet";
-import { onMounted } from "@vue/runtime-core";
-import { getNearbyBikeInfo } from "../modules.js";
+import { onMounted, ref } from "@vue/runtime-core";
+import { getNearbyBikeInfo, getNearbyInfo } from "../modules.js";
 
 export default {
   name: "Home",
   components: {},
   setup() {
     let map = null;
+    const lat = ref(25.05);
+    const lon = ref(121.49);
     const initMap = () => {
       const tile = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
       const attribution =
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-      map = L.map("map").setView([25.05, 121.49], 17);
+      map = L.map("map").setView([lat.value, lon.value], 17);
       L.tileLayer(tile, { attribution: attribution }).addTo(map);
     };
     const loadData = () => {
-      getNearbyBikeInfo("Availability", "25.05", "121.49").then((space) => {
-        getNearbyBikeInfo("Station", "25.05", "121.49").then((res) => {
+      getNearbyBikeInfo("Availability", lat.value, lon.value).then((space) => {
+        getNearbyBikeInfo("Station", lat.value, lon.value).then((res) => {
           res.forEach((item, idx) => {
-            console.log(space[idx].AvailableRentBikes);
             const pos = item.StationPosition;
+            const status = space[idx].ServiceStatus === 1 ? true : false;
             const ico = L.divIcon({
-              html: `<div class="pin">${space[idx].AvailableRentBikes}</div>`,
+              html: `<div class="pin ${status ? "" : "pin-error"}">
+              ${space[idx].AvailableRentBikes}</div>`,
             });
-            const status =
-              space[idx].ServiceStatus === 1 ? "正常營運" : "暫停營運";
             const card = `<div class="bike">
             <h3 class="bike-title">${item.StationName.Zh_tw.replace("_", " ")}
-            </h3><p class="bike-status">${status}</p>
-            <div>
+            </h3><p class="${status ? "bike-success" : "bike-error"}">
+            ${status ? "正常營運" : "暫停營運"}</p>
+            <div class="bike-available">
             <span>可租借車數<br/>${space[idx].AvailableRentBikes}</span>
             <span>可歸還車位<br/>${space[idx].AvailableReturnBikes}</span>
             </div></div>`;
@@ -56,8 +58,35 @@ export default {
               .bindPopup(card)
               .openPopup();
           });
-          console.log(res);
+          // console.log(res);
         });
+        // console.log(space);
+      });
+      getNearbyInfo("ScenicSpot", lat.value, lon.value).then((res) => {
+        res.forEach((item) => {
+          const pos = item.Position;
+          const ico = L.divIcon({ html: `<div class="pin pin-spot"></div>` });
+          const card = `<div class="bike"></div>`;
+          L.marker([pos.PositionLat, pos.PositionLon], { icon: ico })
+            .addTo(map)
+            .bindPopup(card)
+            .openPopup();
+        });
+        // console.log(res);
+      });
+      getNearbyInfo("Restaurant", lat.value, lon.value).then((res) => {
+        res.forEach((item) => {
+          const pos = item.Position;
+          const ico = L.divIcon({
+            html: `<div class="pin pin-restaurant"></div>`,
+          });
+          const card = `<div class="bike"></div>`;
+          L.marker([pos.PositionLat, pos.PositionLon], { icon: ico })
+            .addTo(map)
+            .bindPopup(card)
+            .openPopup();
+        });
+        // console.log(res);
       });
     };
 
